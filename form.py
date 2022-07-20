@@ -22,11 +22,11 @@ def form_age(update, context):
     else:
         context.user_data['form'] = {'age': user_age}
         context.user_data['form']['user_age_group'] = count_age(int(user_age))
-        reply_keybord = [['Жен', 'Муж']]
+        reply_keyboard = [['Жен', 'Муж']]
         update.message.reply_text(
             'Ваш пол?',
             reply_markup=ReplyKeyboardMarkup(
-                reply_keybord, one_time_keybord=True
+                reply_keyboard, one_time_keyboard=True
                 )
         )
         return 'gender'
@@ -43,11 +43,11 @@ def form_gender(update, context):
 def form_weight(update, context):
     context.user_data['form']['weight'] = update.message.text
     context.user_data['form']['weight_rnd'] = weight_user(update.message.text)
-    reply_keybord = [['Низкий', 'Средний', "Высокий"]]
+    reply_keyboard = [['Низкий', 'Средний', "Высокий"]]
     update.message.reply_text(
             'Ваш уровень ежедневной физической активности?',
             reply_markup=ReplyKeyboardMarkup(
-                reply_keybord, one_time_keybord=True
+                reply_keyboard, one_time_keyboard=True
                 )
     )
     return 'activity'
