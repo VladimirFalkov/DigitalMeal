@@ -1,4 +1,4 @@
-from utils import main_keyboard
+from utils import main_keyboard, start_shop_keyboard
 import sqlite3 as sl
 
 
@@ -51,3 +51,11 @@ def calories_at_rest(gender, age, weight):
 def calc_energy(ratio_activity, calories_at_rest):
     calories_total = ratio_activity * calories_at_rest
     return calories_total
+
+
+def take_order(update, context):
+    username = update.effective_user.first_name
+    update.message.reply_text(
+        f'Давайте закажем {username}!',
+        reply_markup=start_shop_keyboard()
+        )
