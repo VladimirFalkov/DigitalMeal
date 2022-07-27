@@ -1,6 +1,6 @@
 from telegram import ParseMode, ReplyKeyboardRemove
 from telegram.ext import ConversationHandler
-from utils import main_keyboard
+from utils import main_keyboard, choose_flavor_keyboard
 
 
 def first_order_form_start(update, context):
@@ -29,8 +29,17 @@ def first_order_form_email(update, context):
     return 'phone'
 
 
+def start_choice_goods(update, context):
+    context.user_data['first_order_form']['phone'] = update.message.text
+    update.message.reply_text(
+        'Выберите вкус', reply_markup=choose_flavor_keyboard()
+    )
+    return 'flavor'
+
+
 def first_order_form_phone(update, context):
     context.user_data['first_order_form']['phone'] = update.message.text
+    # надо изменить 'phone'] на соовтветсвующее значение
     update.message.reply_text(
         "Введите ваш адрес"
         )
