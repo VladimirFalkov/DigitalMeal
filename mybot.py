@@ -7,7 +7,8 @@ from form import (
 from first_order_form import (
     first_order_form_start, first_order_form_name,
     first_order_form_email, first_order_form_phone,
-    first_order_form_address, first_order_form_city
+    first_order_form_address, first_order_form_city,
+    start_choice_goods
 )
 from handlers import greet_user, take_order
 from telegram.ext import (
@@ -32,7 +33,8 @@ def main():
         states={
             'name': [MessageHandler(Filters.text, first_order_form_name)],
             'email': [MessageHandler(Filters.text, first_order_form_email)],
-            'phone': [MessageHandler(Filters.text, first_order_form_phone)],
+            'phone': [MessageHandler(Filters.text, start_choice_goods)],
+            # заменить функцию на в выборе продукта first_order_form_phone
             'address': [MessageHandler(
                 Filters.text, first_order_form_address
                 )],
@@ -73,7 +75,7 @@ def main():
         ]
         )
     dp.add_handler(form)
-    dp.add_handler(CommandHandler('start', greet_user()))
+    dp.add_handler(CommandHandler('start', greet_user))
     dp.add_handler(
         MessageHandler(Filters.regex('^(Сделать Заказ)$'), take_order)
         )
