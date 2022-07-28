@@ -59,3 +59,23 @@ def take_order(update, context):
         f'Давайте закажем {username}!',
         reply_markup=start_shop_keyboard()
         )
+
+
+def get_id_insales(flavor, package_type):
+    con = sl.connect('mybot.db')
+    cursor = con.cursor()
+    sql = 'SELECT id_insales FROM PRODUCTS WHERE flavor=? AND package_type=?'
+    cursor.execute(sql, (flavor, package_type))
+    id_insales = cursor.fetchone()[0]
+    print(id_insales)
+    return id_insales
+
+
+def get_retail_price(flavor, package_type):
+    con = sl.connect('mybot.db')
+    cursor = con.cursor()
+    sql = 'SELECT price FROM PRODUCTS WHERE flavor=? AND package_type=?'
+    cursor.execute(sql, (flavor, package_type))
+    price = cursor.fetchone()[0]
+    print(price)
+    return price
