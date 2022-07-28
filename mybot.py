@@ -11,7 +11,7 @@ from first_order_form import (
 )
 from choice_product_form import (
     choose_flavor, choose_package,
-    choose_quantity
+    choose_variant_of_good, choose_quantity
 )
 from handlers import greet_user, take_order
 from telegram.ext import (
@@ -37,14 +37,13 @@ def main():
                 Filters.regex('^(Пакет|Банка|Бутылка)$'),
                 choose_package
                 )],
-            'quantity': [MessageHandler(
+            'variant_of_good': [MessageHandler(
                 Filters.regex('^(Пакет/5 порций|4 пакета/20 порций|10 пакетов/50 порций|1,4кг/14 порций|3кг/30 порций|5 кг/50 порций|Бутылки 6шт|Бутылки 30шт|Starter Kit 6 бутылок)$'),
-                choose_quantity
+                choose_variant_of_good
                 )],
-            'address': [MessageHandler(
-                Filters.text, first_order_form_address
-                )],
-            'city': [MessageHandler(Filters.text, first_order_form_city)]
+            'quantity': [MessageHandler(
+                Filters.text, choose_quantity
+                )]
         },
         fallbacks=[
             MessageHandler(

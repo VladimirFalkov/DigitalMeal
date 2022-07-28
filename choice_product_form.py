@@ -34,7 +34,7 @@ def choose_package(update, context):
                     reply_keyboard, one_time_keyboard=True
                     )
         )
-        return 'quantity'
+        return 'variant_of_good'
     if context.user_data['first_order_form']['package_type'] == 'Банка':
         reply_keyboard = [
             ['1,4кг/14 порций', ' 3кг/30 порций', "5кг/50 порций"]
@@ -45,7 +45,7 @@ def choose_package(update, context):
                     reply_keyboard, one_time_keyboard=True
                     )
         )
-        return 'quantity'
+        return 'variant_of_good'
     else:
         reply_keyboard = [
             ['Бутылки 6шт', 'Бутылки 30шт', "Starter Kit 6 бутылок"]
@@ -56,11 +56,19 @@ def choose_package(update, context):
                     reply_keyboard, one_time_keyboard=True
                     )
         )
-        return 'quantity'
+        return 'variant_of_good'
+
+
+def choose_variant_of_good(update, context):
+    context.user_data['first_order_form']['variant_of_good'] = update.message.text
+    update.message.reply_text(
+        "Введите количество упаковок"
+    )
+    return 'quantity'
 
 
 def choose_quantity(update, context):
-    context.user_data['first_order_form']['quantity'] = update.message.text
+    context.user_data['first_order_form']['quantity'] = int(update.message.text)
     order_info = order_format_form(
         context.user_data['first_order_form'],
         update.effective_user.first_name
@@ -79,6 +87,6 @@ def order_format_form(first_order_form, username):
 <b>Ваш телефон</b>: {first_order_form['phone']}
 <b>Ваш адрес</b>: {first_order_form['address']}
 <b>Ваш город</b>: {first_order_form['city']}
-<b>Ваш выбор</b>: {first_order_form['quantity']} со вкусом {first_order_form['flavor']}
+<b>Ваш выбор</b>: {first_order_form['variant_of_good']} со вкусом {first_order_form['flavor']}
     """
     return order_info
