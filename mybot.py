@@ -7,8 +7,11 @@ from form import (
 from first_order_form import (
     first_order_form_start, first_order_form_name,
     first_order_form_email, first_order_form_phone,
-    first_order_form_address, first_order_form_city,
-    start_choice_goods
+    first_order_form_address, first_order_form_city
+)
+from choice_product_form import (
+    choose_flavor, choose_package,
+    choose_quantity
 )
 from handlers import greet_user, take_order
 from telegram.ext import (
@@ -23,6 +26,34 @@ def main():
 
     dp = mybot.dispatcher
 
+    choice_product_form = ConversationHandler(
+        entry_points=[
+            MessageHandler(
+                Filters.regex('^(Ваниль|Банан|Завтрак с Кофе)$'), choose_flavor
+                )
+        ],
+        states={
+            'package_type': [MessageHandler(
+                Filters.regex('^(Пакет|Банка|Бутылка)$'),
+                choose_package
+                )],
+            'quantity': [MessageHandler(
+                Filters.regex('^(Пакет/5 порций|4 пакета/20 порций|10 пакетов/50 порций|1,4кг/14 порций|3кг/30 порций|5 кг/50 порций|Бутылки 6шт|Бутылки 30шт|Starter Kit 6 бутылок)$'),
+                choose_quantity
+                )],
+            'address': [MessageHandler(
+                Filters.text, first_order_form_address
+                )],
+            'city': [MessageHandler(Filters.text, first_order_form_city)]
+        },
+        fallbacks=[
+            MessageHandler(
+                Filters.text | Filters.video | Filters.photo |
+                Filters.document | Filters.location, form_dontknow
+                )
+        ]
+        )
+    dp.add_handler(choice_product_form)
     first_order_form = ConversationHandler(
         entry_points=[
             MessageHandler(
@@ -33,8 +64,7 @@ def main():
         states={
             'name': [MessageHandler(Filters.text, first_order_form_name)],
             'email': [MessageHandler(Filters.text, first_order_form_email)],
-            'phone': [MessageHandler(Filters.text, start_choice_goods)],
-            # заменить функцию на в выборе продукта first_order_form_phone
+            'phone': [MessageHandler(Filters.text, first_order_form_phone)],
             'address': [MessageHandler(
                 Filters.text, first_order_form_address
                 )],
