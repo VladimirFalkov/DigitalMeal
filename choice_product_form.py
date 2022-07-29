@@ -1,6 +1,7 @@
 from telegram import ParseMode, ReplyKeyboardMarkup
 from telegram.ext import ConversationHandler
 from utils import choose_flavor_keyboard, main_keyboard
+from handlers import get_id_insales, get_retail_price
 
 
 def start_choice_goods(update, context):
@@ -67,8 +68,17 @@ def choose_variant_of_good(update, context):
     return 'quantity'
 
 
-def choose_quantity(update, context):
+def leave_comment(update, context):
     context.user_data['first_order_form']['quantity'] = int(update.message.text)
+    update.message.reply_text(
+        "Если необходимо оставьте комментарий"
+    )
+    return 'comment'
+
+
+
+def choose_quantity(update, context):
+    context.user_data['first_order_form']['comment'] = update.message.text
     order_info = order_format_form(
         context.user_data['first_order_form'],
         update.effective_user.first_name
@@ -80,7 +90,14 @@ def choose_quantity(update, context):
     return ConversationHandler.END
 
 
+def load_id_and_price_to_data(flavor, package_type):
+    id_insales = get_id_insales(flavor, package_type)
+    price = get_retail_price(flavor, package_type)
+    return id_insales
+
+
 def order_format_form(first_order_form, username):
+    id_insales = load_id_and_price_to_data(first_order_form['flavor'], first_order_form['variant_of_good'])
     order_info = f"""<b>{username}, давайте проверим, итак:</b>
 <b>Заказ на имя</b>:  {first_order_form['name']}
 <b>Ваш email</b>: {first_order_form['email']}
@@ -88,5 +105,6 @@ def order_format_form(first_order_form, username):
 <b>Ваш адрес</b>: {first_order_form['address']}
 <b>Ваш город</b>: {first_order_form['city']}
 <b>Ваш выбор</b>: {first_order_form['variant_of_good']} со вкусом {first_order_form['flavor']}
+{id_insales}
     """
     return order_info

@@ -15,5 +15,11 @@ def start_shop_keyboard():
 
 def choose_flavor_keyboard():
     return ReplyKeyboardMarkup([
-        ['Ваниль', 'Банан', 'Завтрак с Кофе']
+        ['Ваниль', 'Банан', 'Кофе']
     ])
+
+
+def confirm_order():
+    return ReplyKeyboardMarkup({
+        ['Подтвердить заказ', 'Сделать Заказ']
+    })

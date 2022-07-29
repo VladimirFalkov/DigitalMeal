@@ -8,10 +8,13 @@ from first_order_form import (
     first_order_form_start, first_order_form_name,
     first_order_form_email, first_order_form_phone,
     first_order_form_address, first_order_form_city
+    
 )
 from choice_product_form import (
     choose_flavor, choose_package,
-    choose_variant_of_good, choose_quantity
+    choose_variant_of_good, choose_quantity,
+    leave_comment,
+    load_id_and_price_to_data
 )
 from handlers import greet_user, take_order
 from telegram.ext import (
@@ -42,8 +45,11 @@ def main():
                 choose_variant_of_good
                 )],
             'quantity': [MessageHandler(
-                Filters.text, choose_quantity
-                )]
+                Filters.text, leave_comment
+                )],
+            'comment': [MessageHandler(
+                Filters.text, choose_quantity, load_id_and_price_to_data
+                )],
         },
         fallbacks=[
             MessageHandler(
