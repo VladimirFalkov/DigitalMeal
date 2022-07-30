@@ -1,6 +1,7 @@
 # Digital_Meal_Shop
-
+<img width="538" alt="Снимок экрана 2022-07-30 в 07 46 07" src="https://user-images.githubusercontent.com/64154057/181873518-b03032af-304c-49fc-934b-d228193c6c9a.png">
 Digital_Meal_Shop - это бот для Telegram, который оформляет заказы в магазине Digitalmeal.ru и рассчитывает калорийность необходимую человекку при его поле, возрасте, уровне активности и весе.
+
 
 ### Установка
 
