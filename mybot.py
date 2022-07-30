@@ -13,8 +13,8 @@ from first_order_form import (
 from choice_product_form import (
     choose_flavor, choose_package,
     choose_variant_of_good, choose_quantity,
-    leave_comment,
-    load_id_and_price_to_data
+    leave_comment, load_id_to_data,
+    load_price_to_data, confirm_order
 )
 from handlers import greet_user, take_order
 from telegram.ext import (
@@ -32,7 +32,7 @@ def main():
     choice_product_form = ConversationHandler(
         entry_points=[
             MessageHandler(
-                Filters.regex('^(Ваниль|Банан|Завтрак с Кофе)$'), choose_flavor
+                Filters.regex('^(Ваниль|Банан|Кофе)$'), choose_flavor
                 )
         ],
         states={
@@ -41,14 +41,15 @@ def main():
                 choose_package
                 )],
             'variant_of_good': [MessageHandler(
-                Filters.regex('^(Пакет/5 порций|4 пакета/20 порций|10 пакетов/50 порций|1,4кг/14 порций|3кг/30 порций|5 кг/50 порций|Бутылки 6шт|Бутылки 30шт|Starter Kit 6 бутылок)$'),
+                Filters.regex('^(Пакет/5 порций|4 пакета/20 порций|10 пакетов/50 порций|1,4кг/14 порций|3кг/30 порций|5кг/50 порций|Бутылки 6шт|Бутылки 30шт|Starter Kit 6 бутылок)$'),
                 choose_variant_of_good
                 )],
             'quantity': [MessageHandler(
                 Filters.text, leave_comment
                 )],
             'comment': [MessageHandler(
-                Filters.text, choose_quantity, load_id_and_price_to_data
+                Filters.text, choose_quantity,
+                load_price_to_data, load_id_to_data
                 )],
         },
         fallbacks=[
@@ -114,7 +115,9 @@ def main():
     dp.add_handler(
         MessageHandler(Filters.regex('^(Сделать Заказ)$'), take_order)
         )
-
+    dp.add_handler(
+        MessageHandler(Filters.regex('^(Подтвердить заказ)$'), confirm_order)
+        )
     logging.info("Бот стартовал")
     mybot.start_polling()
     mybot.idle()

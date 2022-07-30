@@ -19,7 +19,7 @@ def choose_flavor_keyboard():
     ])
 
 
-def confirm_order():
-    return ReplyKeyboardMarkup({
+def confirm_order_keyboard():
+    return ReplyKeyboardMarkup([
         ['Подтвердить заказ', 'Сделать Заказ']
-    })
+    ])
