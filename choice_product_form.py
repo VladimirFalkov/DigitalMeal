@@ -71,7 +71,9 @@ def choose_variant_of_good(update, context):
 
 
 def leave_comment(update, context):
-    context.user_data['first_order_form']['quantity'] = int(update.message.text)
+    context.user_data['first_order_form']['quantity'] = int(
+        update.message.text
+        )
     update.message.reply_text(
         "Если необходимо оставьте комментарий"
     )
@@ -122,6 +124,7 @@ def order_format_form(first_order_form, username):
 <b>Цена доставки</b>: {delivery_cost}
 <b>ИТОГО с доставкой</b>:{price * first_order_form['quantity'] + delivery_cost}
     """
+    print(id_insales)
     # print(first_order_form)
     return order_info
 
